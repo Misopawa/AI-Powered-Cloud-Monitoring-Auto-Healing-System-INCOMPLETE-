@@ -14,46 +14,7 @@ To run the system, the Westermo dataset is first preprocessed, followed by train
 
 This project demonstrates the integration of artificial intelligence into traditional server monitoring systems and highlights how AI can enhance fault detection and recovery in cloud and industrial environments. It is suitable for academic evaluation, Final Year Project submission, and as a foundation for future enhancements such as dashboard visualization, distributed monitoring, and intelligent recovery optimization.
 
-Python Bash Code/
-│
-├── src/
-│ ├── main.py # Main execution loop
-│ │
-│ ├── monitoring/
-│ │ ├── metrics_collector.py
-│ │ └── threshold_monitor.py
-│ │
-│ ├── ai/
-│ │ ├── train_model.py
-│ │ └── anomaly_detector.py
-│ │
-│ ├── utils/
-│ │ ├── config_loader.py
-│ │ ├── csv_writer.py
-│ │ ├── logger.py
-│ │ └── westermo_preprocessor.py
-│ │
-│ └── recovery/
-│ └── auto_healer.py
-│
-├── config/
-│ └── config.yaml
-│
-├── data/
-│ ├── raw/
-│ │ └── mock_metrics.csv
-│ ├── processed/
-│ │ └── cleaned_metrics.csv
-│ └── metrics.csv
-│
-├── models/
-│ └── isolation_forest.pkl
-│
-├── logs/
-│ └── system.log
-│
-└── README.md
-
 Author: Mohamad Syahmi
 Bachelor Degree in Network Computing
 Final Year Project – AI-Powered Cloud Monitoring and Auto-Healing System
+
