@@ -1,17 +1,14 @@
-# Configuration for AI-based Cloud Monitoring System
+model_path: models/isolation_forest.pkl
+raw_data: data/raw/mock_metrics.csv
+processed_data: data/processed/cleaned_metrics.csv
+log_file: logs/system.log
 
-# CPU usage threshold in percentage (0-100)
-# Alert triggers when usage exceeds this value
-cpu_threshold: 80
-
-# Memory usage threshold in percentage (0-100)
-# Alert triggers when usage exceeds this value
-memory_threshold: 85
-
-# Disk usage threshold in percentage (0-100)
-# Alert triggers when usage exceeds this value
-disk_threshold: 90
-
-# Time interval between monitoring checks in seconds
-# Default: 60 seconds
-monitoring_interval: 60
+thresholds:
+  cpu: 80
+  memory: 75
+  disk: 85
+network_thresholds:
+  max_errin: 5
+  max_errout: 5
+  max_dropin: 50
+  max_dropout: 50
