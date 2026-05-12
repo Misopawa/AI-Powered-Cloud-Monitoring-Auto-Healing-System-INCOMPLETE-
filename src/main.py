@@ -1,52 +1,57 @@
-import time
-import logging
-from config_loader import load_config
-from metrics_collector import collect_metrics
-from csv_writer import save_metrics_to_csv
-from threshold_monitor import check_thresholds
-from anomaly_detector import detect_anomaly
-from auto_healer import trigger_auto_heal
-from logger import log_action
+﻿import time
+import datetime
+
+from data.collector import DataCollector
+from logic.detector import ThresholdEngine
+from logic.healer import PolicyHealer
+
 
 def main():
-    # Load configuration from config.yaml
-    config = load_config("config.yaml")
-    interval = config.get("interval", 60)  # Default to 60 seconds if not specified
+    collector = DataCollector()
+    engine = ThresholdEngine()
+    healer = PolicyHealer()
 
-    # Set up logging
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-    log_action("System started")
+    print("🚀 AI-Powered Monitoring Started. 48-Hour Calibration Active.")
 
-    while True:
-        try:
-            # Step 1: Collect system metrics
-            metrics = collect_metrics()
-            log_action("Metrics collected")
+    try:
+        while True:
+            timestamp = datetime.datetime.now().isoformat()
 
-            # Step 2: Save metrics to CSV
-            save_metrics_to_csv(metrics)
-            log_action("Metrics saved to CSV")
+            # SENSE
+            state = collector.get_live_state()
 
-            # Step 3: Perform threshold-based monitoring
-            threshold_breach = check_thresholds(metrics, config)
-            if threshold_breach:
-                log_action(f"Threshold breach detected: {threshold_breach}")
+            # LEARN
+            engine.record_data_point(state)
+            engine.update_thresholds()
 
-            # Step 4: Perform AI-based anomaly detection
-            anomaly = detect_anomaly(metrics)
-            if anomaly:
-                log_action(f"Anomaly detected: {anomaly}")
+            # THINK
+            culprit = engine.evaluate_state(state)
 
-                # Step 5: Trigger auto-healing if anomaly is detected
-                trigger_auto_heal(anomaly)
-                log_action("Auto-healing triggered")
+            # ACT
+            action_message = None
+            if culprit is not None:
+                current_value = float(state.get(culprit, 0.0) or 0.0)
+                level, action_message = healer.execute_policy(culprit, current_value)
+                action_message = action_message.upper()
 
-            # Sleep for the configured interval before next iteration
-            time.sleep(interval)
+            # LOGGING
+            threshold_info = ", ".join(
+                f"{metric}={engine.active_thresholds.get(metric, 0.0):.1f}%"
+                for metric in ["CPU", "MEMORY", "STORAGE", "NETWORK"]
+            )
+            metric_info = ", ".join(
+                f"{metric}={float(state.get(metric, 0.0)):.1f}%"
+                for metric in ["CPU", "MEMORY", "STORAGE", "NETWORK"]
+            )
 
-        except Exception as e:
-            log_action(f"Error in main loop: {e}")
-            time.sleep(interval)
+            print(f"[{timestamp}] METRICS: {metric_info} | THRESHOLDS: {threshold_info}")
+            if action_message:
+                print(f"[{timestamp}] ACTION: {action_message}")
+
+            time.sleep(5)
+    except KeyboardInterrupt:
+        print("Shutdown requested by user. Cleaning up...")
+
 
 if __name__ == "__main__":
     main()

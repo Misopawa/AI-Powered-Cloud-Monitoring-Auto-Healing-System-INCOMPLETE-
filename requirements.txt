@@ -3,3 +3,5 @@ pyyaml
 pandas
 scikit-learn
 joblib
+proxmoxer
+requests
